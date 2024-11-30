@@ -1,4 +1,4 @@
-curl -X POST http://localhost:1234/session
+curl -X POST http://localhost:1234/member/3
 
 # curl -X POST http://localhost:1234/video \
 # -H "Authorization: vicyberthebest" \
