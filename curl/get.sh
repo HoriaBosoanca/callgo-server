@@ -1,3 +1,1 @@
-curl -X GET http://localhost:1234/video \
--H "Authorization: vicyberthebest" \
--H "Content-Type: application/json"
+curl -X GET http://localhost:1234/session/1

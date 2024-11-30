@@ -23,6 +23,7 @@ func main() {
 
 	// Handle endpoints
 	video.HandleVideo(router)
+	video.HandleSession(router)
 
 	// log and start
 	log.Printf("Server starting on port %s.", port)

@@ -1,4 +1,6 @@
-curl -X POST http://localhost:1234/video \
--H "Authorization: vicyberthebest" \
--H "Content-Type: application/json" \
--d '{"video":"Hello, World!"}'
+curl -X POST http://localhost:1234/session
+
+# curl -X POST http://localhost:1234/video \
+# -H "Authorization: vicyberthebest" \
+# -H "Content-Type: application/json" \
+# -d '{"video":"Hello, World!"}'
