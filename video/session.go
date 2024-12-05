@@ -2,7 +2,6 @@ package video
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -34,10 +33,6 @@ func makeID() int {
 func createSession(w http.ResponseWriter, r *http.Request) {
 	hostID := makeID()
 	sessionsMap[hostID] = Session{Host: hostID}
-
-	for _, v := range(sessionsMap) {
-		fmt.Println("Host: ", v.Host, "Members: ", v.Members)
-	}
 	
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(hostID)
