@@ -19,12 +19,10 @@ var sessionsMap map[int]Session = make(map[int]Session)
 func HandleSession(router *mux.Router) {
 	router.HandleFunc("/session", OptionsHandler).Methods("OPTIONS")
 	router.HandleFunc("/session/{id}", OptionsHandler).Methods("OPTIONS")
-	router.HandleFunc("/session", createSession).Methods("POST")
-	router.HandleFunc("/session/{id}", getSessionByID).Methods("GET")
 	
-	router.HandleFunc("/member", OptionsHandler).Methods("OPTIONS")
-	router.HandleFunc("/member/{id}", OptionsHandler).Methods("OPTIONS")
-	router.HandleFunc("/member/{id}", addMember).Methods("POST")
+	router.HandleFunc("/session", createSession).Methods("POST")
+	router.HandleFunc("/session/{id}", addMember).Methods("POST")
+	router.HandleFunc("/session/{id}", getSessionByID).Methods("GET")
 }
 
 var maxID = 0
