@@ -38,7 +38,8 @@ func postVideo(w http.ResponseWriter, r *http.Request) {
 	// decode a json string as videodata
 	var videoData Video
 	if err := json.NewDecoder(r.Body).Decode(&videoData); err != nil {
-		http.Error(w, "Invalid input", http.StatusBadRequest)
+		errstring := "Invalid input" + videoData.Data
+		http.Error(w, errstring, http.StatusBadRequest)
 		return
 	}
 
