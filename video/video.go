@@ -15,7 +15,11 @@ func HandleVideo(router *mux.Router) {
 	router.HandleFunc("/video/{sessionID}/{memberID}", getVideo).Methods("GET")
 }
 
-var videoMap = make(map[int]map[int]string)
+type Video struct {
+	Data string `json:"video"`
+}
+
+var videoMap = make(map[int]map[int]Video)
 
 func postVideo(w http.ResponseWriter, r *http.Request) {
 	// find sessionID and memberID as urlparams
@@ -32,7 +36,7 @@ func postVideo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// decode a json string as videodata
-	var videoData string
+	var videoData Video
 	if err := json.NewDecoder(r.Body).Decode(&videoData); err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
@@ -40,7 +44,7 @@ func postVideo(w http.ResponseWriter, r *http.Request) {
 
 	// if this is the first frame sent to this session, initialize it's map
 	if videoMap[sessionID] == nil {
-		videoMap[sessionID] = make(map[int]string)
+		videoMap[sessionID] = make(map[int]Video)
 	}
 
 	// add the videodata frame
