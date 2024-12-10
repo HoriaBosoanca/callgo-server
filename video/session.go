@@ -3,17 +3,27 @@ package video
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/google/uuid"
 )
 
-type Session struct {
-	Host int `json:"host"`
-	Members []int `json:"members"`
+// so that it is encoded as json object
+type Name struct {
+	Name string `json:"name"`
 }
 
-var sessionsMap map[int]Session = make(map[int]Session)
+type Participant struct {
+	Name string `json:"name"`
+	ID string `json:"ID"`
+}
+
+type Session struct {
+	Host Participant `json:"host"`
+	Members []Participant `json:"members"`
+}
+
+var sessionsMap map[string]Session = make(map[string]Session)
 
 func HandleSession(router *mux.Router) {
 	router.HandleFunc("/session", OptionsHandler).Methods("OPTIONS")
@@ -24,15 +34,13 @@ func HandleSession(router *mux.Router) {
 	router.HandleFunc("/session/{id}", getSessionByID).Methods("GET")
 }
 
-var maxID = 0
-func makeID() int {
-	maxID++
-	return maxID
-}
-
 func createSession(w http.ResponseWriter, r *http.Request) {
-	hostID := makeID()
-	sessionsMap[hostID] = Session{Host: hostID}
+	hostID := uuid.New().String()
+	var name Name
+	if err := json.NewDecoder(r.Body).Decode(&name); err != nil {
+		http.Error(w, "Invalid name", http.StatusBadRequest)
+	}
+	sessionsMap[hostID] = Session{Host: Participant{Name: name.Name, ID: hostID}}
 	
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(hostID)
@@ -40,31 +48,27 @@ func createSession(w http.ResponseWriter, r *http.Request) {
 
 func getSessionByID(w http.ResponseWriter, r *http.Request) {
 	urlParams := mux.Vars(r)
-	hostID, err := strconv.Atoi(urlParams["id"])
-	if err != nil {
-		http.Error(w, "Wrong url param", http.StatusBadRequest)
-		return
-	}
-
+	hostID := urlParams["id"]
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(sessionsMap[hostID])
 }
 
 func addMember(w http.ResponseWriter, r* http.Request) {
-	urlParams := mux.Vars(r)
-	hostID, err := strconv.Atoi(urlParams["id"])
-	if err != nil {
-		http.Error(w, "Wrong url param", http.StatusBadRequest)
-		return
+	var name Name
+	if err := json.NewDecoder(r.Body).Decode(&name); err != nil {
+		http.Error(w, "Invalid name", http.StatusBadRequest)
 	}
+
+	urlParams := mux.Vars(r)
+	hostID := urlParams["id"]
 
 	session, exists := sessionsMap[hostID]
 	if !exists {
 		http.Error(w, "Session not found", http.StatusNotFound)
         return
 	}
-	memberID := makeID()
-	session.Members = append(sessionsMap[hostID].Members, memberID)
+	memberID := uuid.New().String()
+	session.Members = append(sessionsMap[hostID].Members, Participant{Name: name.Name, ID: memberID})
 	sessionsMap[hostID] = session
 
 	w.WriteHeader(http.StatusCreated)
