@@ -23,7 +23,7 @@ var videoMap = make(map[string]map[string]Video)
 func postVideo(w http.ResponseWriter, r *http.Request) {
 	// find sessionID and memberID as urlparams
 	urlParams := mux.Vars(r)
-	sessionID := urlParams["id"]
+	sessionID := urlParams["sessionID"]
 	memberID := urlParams["memberID"]
 
 	// decode a json string as videodata

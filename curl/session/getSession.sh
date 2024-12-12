@@ -1,1 +1,1 @@
-curl -X GET http://localhost:1234/session/ee43787e-c747-4c00-8826-48fef3d2de2f
+curl -X GET http://localhost:1234/session/920bd0f4-3f3a-401e-8cf6-a4bb3ed6825e
