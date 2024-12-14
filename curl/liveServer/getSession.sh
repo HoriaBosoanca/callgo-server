@@ -1,0 +1,1 @@
+curl -X GET https://callgo-server-386137910114.europe-west3.run.app/session/25d3f8d0-2699-40af-863a-538dcadc5583
