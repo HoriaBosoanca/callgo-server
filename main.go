@@ -25,7 +25,10 @@ func main() {
 	video.HandleVideo(router)
 	video.HandleSession(router)
 
+	certFile := "/etc/letsencrypt/live/horia.live/fullchain.pem"
+	keyFile := "/etc/letsencrypt/live/horia.live/privkey.pem"
+
 	// log and start
 	log.Printf("Server starting on port %s.", port)
-	log.Fatal(http.ListenAndServe(":"+port, router))
+	log.Fatal(http.ListenAndServeTLS(":"+port, certFile, keyFile, router))
 }
