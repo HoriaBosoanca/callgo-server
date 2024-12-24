@@ -28,10 +28,12 @@ var sessionsMap map[string]Session = make(map[string]Session)
 func HandleSession(router *mux.Router) {
 	router.HandleFunc("/session", OptionsHandler).Methods("OPTIONS")
 	router.HandleFunc("/session/{id}", OptionsHandler).Methods("OPTIONS")
+	router.HandleFunc("/session/{hostID}/{memberID}", OptionsHandler).Methods("OPTIONS")
 	
 	router.HandleFunc("/session", createSession).Methods("POST")
 	router.HandleFunc("/session/{id}", addMember).Methods("POST")
 	router.HandleFunc("/session/{id}", getSessionByID).Methods("GET")
+	router.HandleFunc("/session/{hostID}/{memberID}", leaveSession).Methods("DELETE")
 }
 
 func createSession(w http.ResponseWriter, r *http.Request) {
@@ -73,4 +75,35 @@ func addMember(w http.ResponseWriter, r* http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(memberID)
+}
+
+func leaveSession(w http.ResponseWriter, r *http.Request) {
+	hostID := mux.Vars(r)["hostID"]
+	memberID := mux.Vars(r)["memberID"]
+
+	session, exists := sessionsMap[hostID]
+	if !exists {
+		http.Error(w, "Session not found", http.StatusNotFound)
+		return
+	}
+
+	memberIndex := -1
+	for i, member := range session.Members {
+		if member.ID == memberID {
+			memberIndex = i
+			break
+		}
+	}
+
+	if memberIndex == -1 {
+		http.Error(w, "Member not found", http.StatusNotFound)
+		return
+	}
+
+	session.Members = append(session.Members[:memberIndex], session.Members[memberIndex+1:]...)
+	sessionsMap[hostID] = session
+
+	clearVideoData(hostID, memberID)
+
+	w.WriteHeader(http.StatusNoContent)
 }

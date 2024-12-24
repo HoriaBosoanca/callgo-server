@@ -2,6 +2,7 @@ package video
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -51,4 +52,25 @@ func getVideo(w http.ResponseWriter, r *http.Request) {
 	memberID := urlParams["memberID"]
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(videoMap[sessionID][memberID])
+}
+
+// non-endpoint related funcs
+
+func clearVideoData(hostID string, memberID string) {
+	session, sessionExists := videoMap[hostID]
+	if !sessionExists {
+		log.Println("Looks like the session doesn't exist in videoMap")
+		return 
+	}
+
+	memberVideo, memberExists := session[memberID]
+	if !memberExists {
+		log.Println("Looks like the member doesn't exist in videoMap")
+		return
+	}
+
+	memberVideo.Data = ""
+	session[memberID] = memberVideo
+	videoMap[hostID] = session
+	log.Println(videoMap[hostID][memberID].Data)
 }
