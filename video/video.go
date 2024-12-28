@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/websocket"
+	// "github.com/gorilla/websocket"
 )
 
 func HandleVideo(router *mux.Router) {
@@ -15,7 +15,7 @@ func HandleVideo(router *mux.Router) {
 	router.HandleFunc("/video/{sessionID}/{memberID}", postVideo).Methods("POST")
 	router.HandleFunc("/video/{sessionID}/{memberID}", getVideo).Methods("GET")
 
-	router.HandleFunc("/ws", handleWebSockets)
+	// router.HandleFunc("/ws", handleWebSockets)
 }
 
 type Video struct {
@@ -24,35 +24,37 @@ type Video struct {
 
 var videoMap = make(map[string]map[string]Video)
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-}
+// var upgrader = websocket.Upgrader{
+// 	CheckOrigin: func(r *http.Request) bool {
+// 		return true
+// 	},
+// }
 
-func handleWebSockets(w http.ResponseWriter, r *http.Request) {
-	ws, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer ws.Close()
+// func handleWebSockets(w http.ResponseWriter, r *http.Request) {
+// 	ws, err := upgrader.Upgrade(w, r, nil)
+// 	if err != nil {
+// 		log.Println(err)
+// 		return
+// 	}
+// 	defer ws.Close()
 
-	for {
-		var videoData Video
-		err := ws.ReadJSON(&videoData)
-		if err != nil {
-			log.Println("Error reading message:", err)
-			break
-		}
+// 	for {
+// 		r.URL.Query().Get("")
 
-		err = ws.WriteJSON(videoData)
-		if err != nil {
-			log.Println("Error writing message:", err)
-			break
-		}
-	}
-}
+// 		var videoData Video
+// 		err := ws.ReadJSON(&videoData)
+// 		if err != nil {
+// 			log.Println("Error reading message:", err)
+// 			break
+// 		}
+
+// 		err = ws.WriteJSON(videoData)
+// 		if err != nil {
+// 			log.Println("Error writing message:", err)
+// 			break
+// 		}
+// 	}
+// }
 
 func postVideo(w http.ResponseWriter, r *http.Request) {
 	// find sessionID and memberID as urlparams
