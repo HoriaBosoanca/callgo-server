@@ -1,0 +1,14 @@
+# Dirsearch started Tue Dec 31 14:24:14 2024 as: /usr/lib/python3/dist-packages/dirsearch/dirsearch.py -u localhost:1234
+
+301     0B   http://localhost:1234/%2e%2e//google.com    -> REDIRECTS TO: /google.com
+301     0B   http://localhost:1234/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd    -> REDIRECTS TO: /etc/passwd
+301     0B   http://localhost:1234/axis//happyaxis.jsp    -> REDIRECTS TO: /axis/happyaxis.jsp
+301     0B   http://localhost:1234/axis2-web//HappyAxis.jsp    -> REDIRECTS TO: /axis2-web/HappyAxis.jsp
+301     0B   http://localhost:1234/axis2//axis2-web/HappyAxis.jsp    -> REDIRECTS TO: /axis2/axis2-web/HappyAxis.jsp
+301     0B   http://localhost:1234/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd    -> REDIRECTS TO: /etc/passwd
+301     0B   http://localhost:1234/Citrix//AccessPlatform/auth/clientscripts/cookies.js    -> REDIRECTS TO: /Citrix/AccessPlatform/auth/clientscripts/cookies.js
+301     0B   http://localhost:1234/engine/classes/swfupload//swfupload.swf    -> REDIRECTS TO: /engine/classes/swfupload/swfupload.swf
+301     0B   http://localhost:1234/engine/classes/swfupload//swfupload_f9.swf    -> REDIRECTS TO: /engine/classes/swfupload/swfupload_f9.swf
+301     0B   http://localhost:1234/extjs/resources//charts.swf    -> REDIRECTS TO: /extjs/resources/charts.swf
+301     0B   http://localhost:1234/html/js/misc/swfupload//swfupload.swf    -> REDIRECTS TO: /html/js/misc/swfupload/swfupload.swf
+405     0B   http://localhost:1234/session
